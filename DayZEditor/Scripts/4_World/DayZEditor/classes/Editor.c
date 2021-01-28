@@ -545,6 +545,8 @@ class Editor
 	private vector m_PositionBeforeLootEditMode;
 	private ref EditorMapGroupProto m_EditorMapGroupProto;
 	
+	private ref EditorLootSpawn m_EditorLootSpawn
+	
 	static float LootYOffset;
 	
 	void EditLootSpawns(EditorPlaceableItem placeable_item)
@@ -562,13 +564,13 @@ class Editor
 		m_EditorCamera.SetPosition(Vector(10, LootYOffset, 10));
 		m_EditorCamera.LookAt(Vector(0, LootYOffset, 0));	
 		
-		if (!FileExist(Settings.EditorProtoFile)) {
-			EditorLog.Info("EditorProtoFile not found! Copying...");
-			CopyFile("DayZEditor/scripts/data/Defaults/MapGroupProto.xml", Settings.EditorProtoFile);
-		}
+		//if (!FileExist(Settings.EditorProtoFile)) {
+		//	EditorLog.Info("EditorProtoFile not found! Copying...");
+		//	CopyFile("DayZEditor/scripts/data/Defaults/MapGroupProto.xml", Settings.EditorProtoFile);
+		//}
 		
-		m_EditorMapGroupProto = new EditorMapGroupProto(m_LootEditTarget); 
-		EditorXMLManager.LoadMapGroupProto(m_EditorMapGroupProto, Settings.EditorProtoFile);
+		//m_EditorMapGroupProto = new EditorMapGroupProto(m_LootEditTarget); 
+		//EditorXMLManager.LoadMapGroupProto(m_EditorMapGroupProto, Settings.EditorProtoFile);
 		
 		m_LootEditMode = true;
 		CollisionMode = true;
@@ -578,36 +580,87 @@ class Editor
 	
 	private void EditLootSpawnsDialog()
 	{
-		MessageBox.Show("Beta!", "Please know that Edit Loot spawns is just a demo and has NO WAY of saving / Exporting your changes (yet)\n\nDouble Click: Add new Loot Position\nEscape: Exit Loot Editor (Copies loot positions to clipboard)", MessageBoxButtons.OK);
+		MessageBox.Show("Beta!", "Please know that Edit Loot spawns is just a demo and has NO WAY of saving / Exporting your changes (yet)\n\nPress 1-4 (Not numpad): Add new Loot Position\nEscape: Exit Loot Editor (Copies loot positions to clipboard)", MessageBoxButtons.OK);
 	}
 	
 	// Kinda very jank i think
 	void InsertLootPosition(vector position)
 	{
-		m_EditorMapGroupProto.InsertLootPoint(new EditorLootPoint(position, 1, 1, 32));
+		//m_EditorMapGroupProto.InsertLootPoint(new EditorLootPoint(position, 1, 1, 32));
+	}
+	
+	void SpawnGroup1()
+	{
+		m_EditorLootSpawn.InsertLootPointG1(new EditorLootPoint(CurrentMousePosition, 1, 1, 32));
+		Print("MEOW1");
+	}
+	
+	void SpawnGroup2()
+	{
+		m_EditorLootSpawn.InsertLootPointG2(new EditorLootPoint(CurrentMousePosition, 1, 1, 32));
+		Print("MEOW2");
+	}
+	
+	void SpawnGroup3()
+	{
+		m_EditorLootSpawn.InsertLootPointG3(new EditorLootPoint(CurrentMousePosition, 1, 1, 32));
+		Print("MEOW3");
+	}
+	
+	void SpawnGroup4()
+	{
+		m_EditorLootSpawn.InsertLootPointG4(new EditorLootPoint(CurrentMousePosition, 1, 1, 32));
+		Print("MEOW4");
 	}
 	
 	void FinishEditLootSpawns()
 	{
 		EditorLog.Trace("Editor::FinishEditLootSpawns");
-		
-		array<EditorObject> loot_spawns = m_EditorMapGroupProto.GetLootSpawns();
+		array<EditorObject> Group1 = m_EditorLootSpawn.GetLootSpawnsG1();
+		array<EditorObject> Group2 = m_EditorLootSpawn.GetLootSpawnsG2();
+		array<EditorObject> Group3 = m_EditorLootSpawn.GetLootSpawnsG3();
+		array<EditorObject> Group4 = m_EditorLootSpawn.GetLootSpawnsG4();
 		Object building = m_EditorMapGroupProto.GetBuilding();
 		string loot_position_data;
 		
-		loot_position_data += string.Format("<group name=\"%1\" lootmax=\"4\">\n", building.GetType());
-		// this shits a mess
-		loot_position_data += "	<usage name=\"Industrial\" />\n";
-		loot_position_data += "	<usage name=\"Farm\" />\n";
-		loot_position_data += "	<usage name=\"Military\" />\n";
-		loot_position_data += "	<container name=\"lootFloor\" lootmax=\"4\">\n";
+		loot_position_data += string.Format("<group name=\"%1\" lootmax=\"0\">\n", building.GetType());
+		// this shits a mess - Niphoria here - i agree
+		//loot_position_data += "	<usage name=\"Industrial\" />\n";
+		loot_position_data += "	<container name=\"Group1\" lootmax=\"0\">\n";
 		
-		foreach (EditorObject loot_spawn: loot_spawns) {
-			vector loot_pos = loot_spawn.GetPosition();
-			loot_pos[1] = loot_pos[1] - LootYOffset;
-			loot_position_data += string.Format("		<point pos=\"%1\" range=\"0.5\" height=\"1.5\" /> \n", loot_pos.ToString(false));
+		foreach (EditorObject MeowSpawn1: Group1) {
+			vector loot_pos1 = MeowSpawn1.GetPosition();
+			loot_pos1[1] = loot_pos1[1] - LootYOffset;
+			loot_position_data += string.Format("		<point pos=\"%1\" range=\"0.5\" height=\"1.5\" /> \n", loot_pos1.ToString(false));
 		}
 		
+		loot_position_data += "	</container>\n";
+		
+		
+		loot_position_data += "	<container name=\"Group2\" lootmax=\"0\">\n";
+		foreach (EditorObject MeowSpawn2: Group2) {
+			vector loot_pos2 = MeowSpawn2.GetPosition();
+			loot_pos2[1] = loot_pos2[1] - LootYOffset;
+			loot_position_data += string.Format("		<point pos=\"%1\" range=\"0.5\" height=\"1.5\" /> \n", loot_pos2.ToString(false));
+		}
+		
+		loot_position_data += "	</container>\n";
+		
+		loot_position_data += "	<container name=\"Group3\" lootmax=\"0\">\n";
+		foreach (EditorObject MeowSpawn3: Group3) {
+			vector loot_pos3 = MeowSpawn3.GetPosition();
+			loot_pos3[1] = loot_pos3[1] - LootYOffset;
+			loot_position_data += string.Format("		<point pos=\"%1\" range=\"0.5\" height=\"1.5\" /> \n", loot_pos3.ToString(false));
+		}
+		
+		loot_position_data += "	</container>\n";
+		
+		loot_position_data += "	<container name=\"Group4\" lootmax=\"0\">\n";
+		foreach (EditorObject MeowSpawn4: Group4) {
+			vector loot_pos4 = MeowSpawn4.GetPosition();
+			loot_pos4[1] = loot_pos4[1] - LootYOffset;
+			loot_position_data += string.Format("		<point pos=\"%1\" range=\"0.5\" height=\"1.5\" /> \n", loot_pos4.ToString(false));
+		}
 		loot_position_data += "	</container>\n";
 		loot_position_data += "</group>\n";
 		
