@@ -546,7 +546,6 @@ class Editor
 	private ref EditorMapGroupProto m_EditorMapGroupProto;
 	
 	private ref EditorLootSpawn m_EditorLootSpawn
-	
 	static float LootYOffset;
 	
 	void EditLootSpawns(EditorPlaceableItem placeable_item)
@@ -568,8 +567,13 @@ class Editor
 		//	EditorLog.Info("EditorProtoFile not found! Copying...");
 		//	CopyFile("DayZEditor/scripts/data/Defaults/MapGroupProto.xml", Settings.EditorProtoFile);
 		//}
+	
+		//m_LootGroup1 = new m_LootGroup1();
+		//m_LootGroup2 = new m_LootGroup2();
+		//m_LootGroup3 = new m_LootGroup3();
+		//m_LootGroup4 = new m_LootGroup4();
 		
-		//m_EditorMapGroupProto = new EditorMapGroupProto(m_LootEditTarget); 
+		m_EditorLootSpawn = new EditorLootSpawn(); 
 		//EditorXMLManager.LoadMapGroupProto(m_EditorMapGroupProto, Settings.EditorProtoFile);
 		
 		m_LootEditMode = true;
@@ -592,26 +596,23 @@ class Editor
 	void SpawnGroup1()
 	{
 		m_EditorLootSpawn.InsertLootPointG1(new EditorLootPoint(CurrentMousePosition, 1, 1, 32));
-		Print("MEOW1");
 	}
 	
 	void SpawnGroup2()
 	{
 		m_EditorLootSpawn.InsertLootPointG2(new EditorLootPoint(CurrentMousePosition, 1, 1, 32));
-		Print("MEOW2");
 	}
 	
 	void SpawnGroup3()
 	{
 		m_EditorLootSpawn.InsertLootPointG3(new EditorLootPoint(CurrentMousePosition, 1, 1, 32));
-		Print("MEOW3");
 	}
 	
 	void SpawnGroup4()
 	{
 		m_EditorLootSpawn.InsertLootPointG4(new EditorLootPoint(CurrentMousePosition, 1, 1, 32));
-		Print("MEOW4");
 	}
+	
 	
 	void FinishEditLootSpawns()
 	{
@@ -620,14 +621,13 @@ class Editor
 		array<EditorObject> Group2 = m_EditorLootSpawn.GetLootSpawnsG2();
 		array<EditorObject> Group3 = m_EditorLootSpawn.GetLootSpawnsG3();
 		array<EditorObject> Group4 = m_EditorLootSpawn.GetLootSpawnsG4();
-		Object building = m_EditorMapGroupProto.GetBuilding();
 		string loot_position_data;
 		
-		loot_position_data += string.Format("<group name=\"%1\" lootmax=\"0\">\n", building.GetType());
+		loot_position_data += string.Format("<group name=\"%1\" lootmax=\"0\">\n", m_LootEditTarget.GetType());
 		// this shits a mess - Niphoria here - i agree
 		//loot_position_data += "	<usage name=\"Industrial\" />\n";
 		loot_position_data += "	<container name=\"Group1\" lootmax=\"0\">\n";
-		
+		loot_position_data += "	<usage name=\"General\" />\n";
 		foreach (EditorObject MeowSpawn1: Group1) {
 			vector loot_pos1 = MeowSpawn1.GetPosition();
 			loot_pos1[1] = loot_pos1[1] - LootYOffset;
@@ -638,6 +638,7 @@ class Editor
 		
 		
 		loot_position_data += "	<container name=\"Group2\" lootmax=\"0\">\n";
+		loot_position_data += "	<usage name=\"Weapon\" />\n";
 		foreach (EditorObject MeowSpawn2: Group2) {
 			vector loot_pos2 = MeowSpawn2.GetPosition();
 			loot_pos2[1] = loot_pos2[1] - LootYOffset;
@@ -647,6 +648,7 @@ class Editor
 		loot_position_data += "	</container>\n";
 		
 		loot_position_data += "	<container name=\"Group3\" lootmax=\"0\">\n";
+		loot_position_data += "	<usage name=\"Smol\" />\n";
 		foreach (EditorObject MeowSpawn3: Group3) {
 			vector loot_pos3 = MeowSpawn3.GetPosition();
 			loot_pos3[1] = loot_pos3[1] - LootYOffset;
@@ -656,6 +658,7 @@ class Editor
 		loot_position_data += "	</container>\n";
 		
 		loot_position_data += "	<container name=\"Group4\" lootmax=\"0\">\n";
+		loot_position_data += "	<usage name=\"Shelf\" />\n";
 		foreach (EditorObject MeowSpawn4: Group4) {
 			vector loot_pos4 = MeowSpawn4.GetPosition();
 			loot_pos4[1] = loot_pos4[1] - LootYOffset;
@@ -666,7 +669,13 @@ class Editor
 		
 		GetGame().CopyToClipboard(loot_position_data);
 		
-		delete m_EditorMapGroupProto;
+		delete m_EditorLootSpawn;
+		//delete m_LootGroup2;
+		//delete m_LootGroup3;
+		//delete m_LootGroup4;
+		
+		
+		
 		
 		GetGame().ObjectDelete(m_LootEditTarget);
 		GetCamera().Speed = 60;
@@ -834,18 +843,21 @@ class Editor
 		return object_set;
 	}
 	
-	void DeleteObject(EditorObject editor_object, bool create_undo = true) 
+	void DeleteObject(EditorObject editor_object, bool create_undo = true) // This shit is never called
 	{
 		EditorAction action = new EditorAction("Create", "Delete");
-		if (!editor_object.Locked) {
+		if (!editor_object.Locked) 
+		{
 			action.InsertUndoParameter(editor_object, new Param1<int>(editor_object.GetID()));
-			action.InsertRedoParameter(editor_object, new Param1<int>(editor_object.GetID()));
+			action.InsertRedoParameter(editor_object, new Param1<int>(editor_object.GetID()));;
 			m_ObjectManager.DeleteObject(editor_object);
 		}
 		
 		if (create_undo) {
 			InsertAction(action);
 		}
+		
+		
 	}
 	
 	
@@ -854,10 +866,44 @@ class Editor
 		EditorAction action = new EditorAction("Create", "Delete");
 
 		foreach (int id, EditorObject editor_object: editor_object_map) {
-			if (!editor_object.Locked) {
+			if (!editor_object.Locked) 
+			{
+				if (m_LootEditMode)
+				{
+					switch(editor_object.GetType())
+					{
+						case "GiftBox_Small_1" :
+						EditorLog.Trace("RemoveLootPointG1")
+						m_EditorLootSpawn.RemoveLootPointG1(editor_object);
+						break;
+				
+						case "GiftBox_Small_2" :
+						EditorLog.Trace("RemoveLootPointG2")
+						m_EditorLootSpawn.RemoveLootPointG2(editor_object);
+						break;
+				
+						case "GiftBox_Small_3" :
+						EditorLog.Trace("RemoveLootPointG3")
+						m_EditorLootSpawn.RemoveLootPointG3(editor_object);
+						break;
+					
+						case "GiftBox_Small_4" :
+						EditorLog.Trace("RemoveLootPointG4")
+						m_EditorLootSpawn.RemoveLootPointG4(editor_object);
+						break;
+				
+						default:
+						// Do nothing
+					}
+				
+				}
+				
+				
 				action.InsertUndoParameter(editor_object, new Param1<int>(editor_object.GetID()));
 				action.InsertRedoParameter(editor_object, new Param1<int>(editor_object.GetID()));
 				m_ObjectManager.DeleteObject(editor_object);
+				
+				
 			}
 		}
 		

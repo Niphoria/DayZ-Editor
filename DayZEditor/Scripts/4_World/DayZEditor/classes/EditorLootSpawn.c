@@ -2,10 +2,39 @@ class EditorLootSpawn
 {
 	//ref array<ref EditorLootSpawnGroup> m_EditorLootSpawn = {};
 	
+	
+	
+	
 	ref array<EditorObject> m_LootGroup1 = {};
 	ref array<EditorObject> m_LootGroup2 = {};
 	ref array<EditorObject> m_LootGroup3 = {};
 	ref array<EditorObject> m_LootGroup4 = {};
+	
+	
+	void ~EditorLootSpawn()
+	{
+		foreach (EditorObject editor_object1: m_LootGroup1) {
+			GetEditor().DeleteObject(editor_object1, false);
+		}
+		foreach (EditorObject editor_object2: m_LootGroup2) {
+			GetEditor().DeleteObject(editor_object2, false);
+		}
+		foreach (EditorObject editor_object3: m_LootGroup3) {
+			GetEditor().DeleteObject(editor_object3, false);
+		}
+		foreach (EditorObject editor_object4: m_LootGroup4) {
+			GetEditor().DeleteObject(editor_object4, false);
+		}
+		
+		delete m_LootGroup1;
+		delete m_LootGroup2;
+		delete m_LootGroup3;
+		delete m_LootGroup4;
+		
+		
+		
+		//delete EditorLootSpawn;
+	}
 	
 	array<EditorObject> GetLootSpawnsG1() 
 	{
@@ -23,7 +52,6 @@ class EditorLootSpawn
 	{
 		return m_LootGroup4;
 	}
-	
 	void InsertLootPointG1(EditorLootPoint loot_point)
 	{
 		EditorLog.Info("Inserting Loot Point %1", loot_point.GetPosition().ToString());
@@ -127,5 +155,26 @@ class EditorLootSpawn
 		
 		//m_Building.Update();
 	}
-
+	
+	
+	void RemoveLootPointG1(EditorObject loot_point)
+	{
+		
+		m_LootGroup1.Remove(m_LootGroup1.Find(loot_point));
+	}
+	
+	void RemoveLootPointG2(EditorObject loot_point)
+	{
+		m_LootGroup2.Remove(m_LootGroup2.Find(loot_point));
+	}
+	
+	void RemoveLootPointG3(EditorObject loot_point)
+	{
+		m_LootGroup3.Remove(m_LootGroup3.Find(loot_point));
+	}
+	
+	void RemoveLootPointG4(EditorObject loot_point)
+	{
+		m_LootGroup4.Remove(m_LootGroup4.Find(loot_point));
+	}
 }
