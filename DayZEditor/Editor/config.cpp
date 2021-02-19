@@ -105,4 +105,26 @@ class CfgVehicles
 		scope=2;
 		model="DZ\gear\food\eeg.p3d";
 	};
+	
+	
+	class LootSpawn1: HouseNoDestruct
+	{
+		scope=2;
+		model = "\DayZEditor\Editor\LootSpawnThingy1.p3d";
+	}
+	class LootSpawn2: HouseNoDestruct
+	{
+		scope=2;
+		model = "\DayZEditor\Editor\LootSpawnThingy2.p3d";
+	}
+	class LootSpawn3: HouseNoDestruct
+	{
+		scope=2;
+		model = "\DayZEditor\Editor\LootSpawnThingy3.p3d";
+	}
+	class LootSpawn4: HouseNoDestruct
+	{
+		scope=2;
+		model = "\DayZEditor\Editor\LootSpawnThingy4.p3d";
+	}
 };

@@ -65,6 +65,10 @@ class EditorCommandManager
 	
 	ref EditorDonateCommand DonateCommand;
 	ref EditorHelpCommand HelpCommand;
+	ref EditorSpawnGroup1 SpawnGroup1;
+	ref EditorSpawnGroup2 SpawnGroup2;
+	ref EditorSpawnGroup3 SpawnGroup3;
+	ref EditorSpawnGroup4 SpawnGroup4;
 	
 	
 	void EditorCommandManager()

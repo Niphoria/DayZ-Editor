@@ -56,7 +56,7 @@ class EditorLootSpawn
 	{
 		EditorLog.Info("Inserting Loot Point %1", loot_point.GetPosition().ToString());
 		vector loot_pos = loot_point.GetPosition();	
-		EditorObject loot_display = GetEditor().CreateObject(EditorObjectData.Create("GiftBox_Small_1", loot_pos, vector.Zero, 1, EditorObjectFlags.OBJECTMARKER));
+		EditorObject loot_display = GetEditor().CreateObject(EditorObjectData.Create("LootSpawn1", loot_pos, vector.Zero, 1, EditorObjectFlags.OBJECTMARKER));
 
 		// might be bad
 		//m_Building.AddChild(loot_display.GetWorldObject(), -1);
@@ -82,7 +82,7 @@ class EditorLootSpawn
 	{
 		EditorLog.Info("Inserting Loot Point %1", loot_point.GetPosition().ToString());
 		vector loot_pos = loot_point.GetPosition();	
-		EditorObject loot_display = GetEditor().CreateObject(EditorObjectData.Create("GiftBox_Small_2", loot_pos, vector.Zero, 1, EditorObjectFlags.OBJECTMARKER));
+		EditorObject loot_display = GetEditor().CreateObject(EditorObjectData.Create("LootSpawn2", loot_pos, vector.Zero, 1, EditorObjectFlags.OBJECTMARKER));
 
 		// might be bad
 		//m_Building.AddChild(loot_display.GetWorldObject(), -1);
@@ -108,7 +108,7 @@ class EditorLootSpawn
 	{
 		EditorLog.Info("Inserting Loot Point %1", loot_point.GetPosition().ToString());
 		vector loot_pos = loot_point.GetPosition();	
-		EditorObject loot_display = GetEditor().CreateObject(EditorObjectData.Create("GiftBox_Small_3", loot_pos, vector.Zero, 1, EditorObjectFlags.OBJECTMARKER));
+		EditorObject loot_display = GetEditor().CreateObject(EditorObjectData.Create("LootSpawn3", loot_pos, vector.Zero, 1, EditorObjectFlags.OBJECTMARKER));
 
 		// might be bad
 		//m_Building.AddChild(loot_display.GetWorldObject(), -1);
@@ -134,7 +134,7 @@ class EditorLootSpawn
 	{
 		EditorLog.Info("Inserting Loot Point %1", loot_point.GetPosition().ToString());
 		vector loot_pos = loot_point.GetPosition();	
-		EditorObject loot_display = GetEditor().CreateObject(EditorObjectData.Create("GiftBox_Small_4", loot_pos, vector.Zero, 1, EditorObjectFlags.OBJECTMARKER));
+		EditorObject loot_display = GetEditor().CreateObject(EditorObjectData.Create("LootSpawn4", loot_pos, vector.Zero, 1, EditorObjectFlags.OBJECTMARKER));
 
 		// might be bad
 		//m_Building.AddChild(loot_display.GetWorldObject(), -1);

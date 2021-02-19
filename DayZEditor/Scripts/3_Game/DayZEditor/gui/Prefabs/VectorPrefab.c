@@ -43,19 +43,22 @@ class VectorPrefab: PrefabBase<vector>
 	
 	override bool OnMouseWheel(Widget w, int x, int y, int wheel)
 	{
-		float motion = wheel;
-		motion *= 0.5;
+		float motion = wheel;	// 
+		motion *= 0.1;
 		
 		if (KeyState(KeyCode.KC_LCONTROL)) {
-			motion *= 10;
+			motion *= 0.5;
 		}
 		
 		if (KeyState(KeyCode.KC_LSHIFT)) {
 			// code sucks because it needs to be perfectly accurate, since floats get cut off at high numbers
-			if (wheel == 1) { 
-				motion = 0.1;
-			} else {
-				motion = -0.1;
+			if (wheel == 1) 
+			{ 
+				motion = 0.01;
+			} 
+			else 
+			{
+				motion = -0.01;
 			}
 		}
 				

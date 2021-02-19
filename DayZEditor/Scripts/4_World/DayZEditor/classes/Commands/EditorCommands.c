@@ -808,3 +808,68 @@ class EditorAddToFavoritesCommand: EditorCommand
 		return "Add to favorites...";
 	}
 }
+
+class EditorSpawnGroup1: EditorCommand
+{
+	
+	protected override void Call(Class sender, CommandArgs args) 
+	{
+		m_Editor.SpawnGroup1();
+	}
+	
+	override string GetName() {
+		return "Spawn Group 1";
+	}
+	
+	override ShortcutKeys GetShortcut() {
+		return { KeyCode.KC_1 };
+	}
+}
+class EditorSpawnGroup2: EditorCommand
+{
+	
+	protected override void Call(Class sender, CommandArgs args) 
+	{
+		m_Editor.SpawnGroup2();
+	}
+	
+	override string GetName() {
+		return "Spawn Group 2";
+	}
+	
+	override ShortcutKeys GetShortcut() {
+		return { KeyCode.KC_2 };
+	}
+}
+class EditorSpawnGroup3: EditorCommand
+{
+	
+	protected override void Call(Class sender, CommandArgs args) 
+	{
+		m_Editor.SpawnGroup3();
+	}
+	
+	override string GetName() {
+		return "Spawn Group 3";
+	}
+	
+	override ShortcutKeys GetShortcut() {
+		return { KeyCode.KC_3 };
+	}
+}
+class EditorSpawnGroup4: EditorCommand
+{
+	
+	protected override void Call(Class sender, CommandArgs args) 
+	{
+		m_Editor.SpawnGroup4();
+	}
+	
+	override string GetName() {
+		return "Spawn Group 4";
+	}
+	
+	override ShortcutKeys GetShortcut() {
+		return { KeyCode.KC_4 };
+	}
+}
